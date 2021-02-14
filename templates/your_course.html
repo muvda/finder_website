@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Search result{% endblock %}
+
+
+{% block main %}
+    <div class="container">
+        {% if outline %}
+            {% for key, value in outline.items() %}
+                {% if key=='course' %}
+                    <h4 class="my-0 font-weight-bold">{{value}}</h4>
+                {% endif %}
+                {% if key=='time' %}
+                    <p class="my-0 font-italic font-weight-light">Course Times + Location:</p>
+                    {% for time in value %}
+                        <p class="my-1 font-weight-normal" >{{ time }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% if key=='instructors' %}
+                    <p class="my-0 font-italic font-weight-light">Instructor:</p>
+                    {% for instructor in value %}
+                        <p class="my-1 font-weight-normal" >{{ instructor }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% else %}
+                    <p class="my-1 font-weight-normal" id="{{ key }}">{{ value }} </p>
+            {% endfor %}
+        {% endif %}
+
+        {% if ratings %}
+            <h4 class="my-0 font-weight-bold">Professor rating:</h4>
+            {% for rating in ratings %}
+                {% if 'error' not in rating %}
+                    {% for key, value in rating.items() %}
+                        {% if key=='name' %}
+                            <p class="my-1 font-weight-normal">Name: {{value}}</p>
+                        {% endif %}
+                        {% if key=='score' %}
+                            <p class="my-1 font-weight-normal">Score: {{value}} / 5</p>
+                        {% endif %}
+                        {% if key=='take_again' %}
+                            <p class="my-1 font-weight-normal">Would take again: {{value}}</p>
+                        {% endif %}
+                        {% if key=='difficulty' %}
+                            <p class="my-1 font-weight-normal">Difficulty: {{value}}</p>
+                        {% endif %}
+                        {% if key=='tags' %}
+                            <span class="my-1 font-weight-normal">Tags:</span>
+                            {% for tag in value %}
+                                <span class="my-1 font-weight-normal"> {{ tag }},</span>
+                            {% endfor %}
+                        {% endif %}
+                        {% if key=='url' %}
+                            <br>
+                            <a class="my-1 font-weight-normal" href="{{ value }}">Click here to see reviews</a>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="container text-center">
+        <p>
+            <a href="{{ url_for('home') }}">
+                <button class="btn btn-primary my-2">Find another course</button> </a>
+        </p>
+    </div>
+{% endblock %}

@@ -28,9 +28,9 @@ def scrape_rating(name):
     root = session.get(query_url)
     root_soup = BeautifulSoup(root.content, "html.parser")
     prof_infos = []
-    for lists in root_soup.findAll('li', attrs={'class': 'listing PROFESSOR'}):
-        if len(lists) != 0:
-            prof_infos.append(lists.a['href'])
+    print(root_soup.findAll('a', attrs={'class': 'TeacherCard__StyledTeacherCard-syjs0d-0 dLJIlx'}))
+    for lists in root_soup.findAll('a', attrs={'class': 'TeacherCard__StyledTeacherCard-syjs0d-0 dLJIlx'}):
+        prof_infos.append(lists['href'])
     if len(prof_infos) != 0:
         # basic logic: obtain the first link
         prof_rating_url = MY_PROF_URL + prof_infos[0]
@@ -47,7 +47,10 @@ def scrape_rating(name):
             else:
                 prof_review['difficulty'] = feedback_num[0]
         if len(feedback_num) >= 2:
-            prof_review['difficulty'] = feedback_num[1]
+            if '%' in feedback_num[1]:
+                prof_review['take_again'] = feedback_num[1]
+            else:
+                prof_review['difficulty'] = feedback_num[1]
         # look for all tags
         feedback_tag = []
         div_tags = review_soup.find("div", {"class": "TeacherTags__TagsContainer-sc-16vmh1y-0 dbxJaW"})

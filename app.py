@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    with urllib.request.urlopen("http://www.sfu.ca/bin/wcm/course-outlines/?year=2021&term=summer&search=CMPT") as url:
+    with urllib.request.urlopen("http://www.sfu.ca/bin/wcm/course-outlines/?year=2021&term=fall&search=CMPT") as url:
         courses = json.loads(url.read().decode())
     return render_template('home.html', courses=courses)
 
